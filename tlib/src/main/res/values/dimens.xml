@@ -1,0 +1,23 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <!-- dialog -->
+    <dimen name="bottom_dialog_height">350dp</dimen>
+    <dimen name="dialog_w">220dp</dimen>
+    <dimen name="dialog_h">80dp</dimen>
+    <dimen name="dialog_m_h">30dp</dimen>
+
+    <!-- ttitle.xml -->
+    <dimen name="ttitle_and_top_h">75dp</dimen>
+    <dimen name="top_h">25dp</dimen>
+    <dimen name="ttitle_h">50dp</dimen>
+    <dimen name="ttitle_h2">36dp</dimen>
+    <dimen name="ttitle_img_w">45dp</dimen>
+    <dimen name="ttitle_menu_top">-10dp</dimen>
+
+    <!-- filter.xml -->
+    <dimen name="filter_max_w1">300dp</dimen>
+    <dimen name="filter_max_w2">150dp</dimen>
+    <dimen name="filter_max_w3">95dp</dimen>
+    <dimen name="filter_max_w4">70dp</dimen>
+
+</resources>
