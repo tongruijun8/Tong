@@ -1,1 +1,1 @@
-include ':PhotoPicker', ':tlib', ':tres'
+include ':tlib', ':tres'

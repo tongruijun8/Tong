@@ -3,6 +3,7 @@ package com.trj.tlib.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -34,14 +35,20 @@ import com.trj.tlib.manage.NetWorkManage;
 import com.trj.tlib.tdialog.TLoadingDialog;
 import com.trj.tlib.uils.Logger;
 import com.trj.tlib.uils.ToastUtil;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.GlideEngine;
+import com.zhihu.matisse.filter.Filter;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import me.iwf.photopicker.PhotoPicker;
 
@@ -256,23 +263,42 @@ public class InitActivity extends AppCompatActivity {
         }
     }
 
+
     //    private List<String> selectedPhotos = new ArrayList<>();
     protected void selectImage(int count) {
         if (count > 0) {
-            PhotoPicker.builder()
-                    //设置图片选择数量
-                    .setPhotoCount(count)
-                    //选择界面第一个显示拍照按钮
-                    .setShowCamera(true)
-                    //取消选择时点击图片浏览
-                    .setPreviewEnabled(false)
-                    //开启裁剪
-//                .setCrop(true)
-                    //设置裁剪比例(X,Y)
-//                .setCropXY(1, 1)
-                    //设置裁剪界面标题栏颜色，设置裁剪界面状态栏颜色
-//                .setCropColors(R.color.colorPrimary, R.color.colorPrimaryDark)
-                    .start(this);
+//            PhotoPicker.builder()
+//                    //设置图片选择数量
+//                    .setPhotoCount(count)
+//                    //选择界面第一个显示拍照按钮
+//                    .setShowCamera(true)
+//                    //取消选择时点击图片浏览
+//                    .setPreviewEnabled(false)
+//                    //开启裁剪
+////                .setCrop(true)
+//                    //设置裁剪比例(X,Y)
+////                .setCropXY(1, 1)
+//                    //设置裁剪界面标题栏颜色，设置裁剪界面状态栏颜色
+////                .setCropColors(R.color.colorPrimary, R.color.colorPrimaryDark)
+//                    .start(this);
+
+            Set<MimeType> mimeTypes = new HashSet<>();
+            mimeTypes.add(MimeType.JPEG);
+            mimeTypes.add(MimeType.PNG);
+            Matisse.from(this)
+                    .choose(mimeTypes)
+                    .theme(R.style.AppTheme_NoActionBar_welcome)
+                    .countable(false)
+                    .maxSelectable(count)
+                    .originalEnable(true)
+                    .maxOriginalSize(10)
+//                    .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+//                    .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                    .thumbnailScale(0.85f)
+                    .imageEngine(new GlideEngine())
+                    .forResult(10001);
+
         }
     }
 
@@ -280,15 +306,22 @@ public class InitActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //选择返回
-        if (resultCode == RESULT_OK && requestCode == PhotoPicker.REQUEST_CODE) {
-            if (data != null) {
-                ArrayList<String> photos =
-                        data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
-                if (photos != null) {
-//                selectedPhotos.addAll(photos);
-                    backImage(photos);
-                }
+        if (resultCode == RESULT_OK && requestCode == 10001) {
+//            Matisse.obtainResult(data),
+//                    Matisse.obtainOriginalState(data)
+            List<String> photos = Matisse.obtainPathResult(data);
+            if (photos != null && photos.size() > 0) {
+                backImage(photos);
             }
+
+//            if (data != null) {
+//                ArrayList<String> photos =
+//                        data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+//                if (photos != null) {
+////                selectedPhotos.addAll(photos);
+//                    backImage(photos);
+//                }
+//            }
         }
 
 
