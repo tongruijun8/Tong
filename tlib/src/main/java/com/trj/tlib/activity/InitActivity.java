@@ -33,20 +33,18 @@ import com.trj.tlib.app.InitApplication;
 import com.trj.tlib.manage.ActivityManager;
 import com.trj.tlib.manage.NetWorkManage;
 import com.trj.tlib.tdialog.TLoadingDialog;
+import com.trj.tlib.uils.Glide4Engine;
 import com.trj.tlib.uils.Logger;
 import com.trj.tlib.uils.ToastUtil;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.GlideEngine;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 
 /**
@@ -81,7 +79,6 @@ public class InitActivity extends AppCompatActivity {
         rootMask = findViewById(R.id.root_mask);
 
 
-
 //        初始化工作
         initWork();
 //        添加内容View
@@ -94,18 +91,19 @@ public class InitActivity extends AppCompatActivity {
     /**
      * 注册EventBus
      */
-    public void registerEventBus(){
+    public void registerEventBus() {
         EventBus.getDefault().register(this);
     }
 
 
     /**
      * 设置Buggly 的 appid
+     *
      * @param bugglyAppid
      */
-    public void setBugglyAppid(String bugglyAppid){
+    public void setBugglyAppid(String bugglyAppid) {
 
-        Bugly.init(context,bugglyAppid,false);
+        Bugly.init(context, bugglyAppid, false);
     }
 
     /**
@@ -168,14 +166,14 @@ public class InitActivity extends AppCompatActivity {
                     int flag = window.getDecorView().getSystemUiVisibility() & ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
                     window.getDecorView().setSystemUiVisibility(flag);
                 }
-            } else if(Build.MANUFACTURER.equalsIgnoreCase("OPPO")){
+            } else if (Build.MANUFACTURER.equalsIgnoreCase("OPPO")) {
                 //OPPO
                 if (colorRes == R.color.colorwhite) {
                     setOPPOStatusTextColor(true, this);
-                }else {
+                } else {
                     setOPPOStatusTextColor(false, this);
                 }
-            }  else {
+            } else {
                 Window window = getWindow();
                 window.setStatusBarColor(context.getResources().getColor(colorRes));
             }
@@ -254,49 +252,30 @@ public class InitActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(EventBus.getDefault().isRegistered(this)) {
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
     }
 
 
-    //    private List<String> selectedPhotos = new ArrayList<>();
     protected void selectImage(int count) {
         if (count > 0) {
-//            PhotoPicker.builder()
-//                    //设置图片选择数量
-//                    .setPhotoCount(count)
-//                    //选择界面第一个显示拍照按钮
-//                    .setShowCamera(true)
-//                    //取消选择时点击图片浏览
-//                    .setPreviewEnabled(false)
-//                    //开启裁剪
-////                .setCrop(true)
-//                    //设置裁剪比例(X,Y)
-////                .setCropXY(1, 1)
-//                    //设置裁剪界面标题栏颜色，设置裁剪界面状态栏颜色
-////                .setCropColors(R.color.colorPrimary, R.color.colorPrimaryDark)
-//                    .start(this);
-
-            Set<MimeType> mimeTypes = new HashSet<>();
-            mimeTypes.add(MimeType.JPEG);
-            mimeTypes.add(MimeType.PNG);
             Matisse.from(this)
-                    .choose(mimeTypes)
-                    .theme(R.style.AppTheme_NoActionBar_welcome)
-                    .countable(false)
+                    .choose(MimeType.ofImage())
+                    .countable(true)
                     .maxSelectable(count)
                     .originalEnable(true)
                     .maxOriginalSize(10)
+                    .autoHideToolbarOnSingleTap(true)
 //                    .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
-//                    .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                    .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
                     .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                     .thumbnailScale(0.85f)
-                    .imageEngine(new GlideEngine())
+                    .imageEngine(new Glide4Engine())
                     .forResult(10001);
-
         }
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -310,33 +289,7 @@ public class InitActivity extends AppCompatActivity {
                 backImage(photos);
             }
 
-//            if (data != null) {
-//                ArrayList<String> photos =
-//                        data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
-//                if (photos != null) {
-////                selectedPhotos.addAll(photos);
-//                    backImage(photos);
-//                }
-//            }
         }
-
-
-//        if (resultCode == RESULT_OK &&
-//                (requestCode == PhotoPicker.REQUEST_CODE || requestCode == PhotoPreview.REQUEST_CODE)) {
-//            List<String> photos = null;
-//            if (data != null) {
-//                photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
-//            }
-////            selectedPhotos.clear();
-//            if (photos != null) {
-////                selectedPhotos.addAll(photos);
-//                backImage(photos);
-//            }
-//        }
-//        //拍照功能或者裁剪后返回
-//        if (resultCode == RESULT_OK && requestCode == PhotoPicker.CROP_CODE) {
-//            backImagePhotoOrCrop(data.getStringExtra(PhotoPicker.KEY_CAMEAR_PATH));
-//        }
 
     }
 
@@ -344,12 +297,6 @@ public class InitActivity extends AppCompatActivity {
     protected void backImage(List<String> photos) {
 
     }
-
-//    /* 拍照功能或者裁剪后返回 */
-//    protected void backImagePhotoOrCrop(String path){
-//
-//    }
-
 
     /**
      * 绑定列表数据，资格证，身份证，社区，课程，趣生活等图片
@@ -483,36 +430,39 @@ public class InitActivity extends AppCompatActivity {
         super.finish();
 //        setActivityAnim(android.R.anim.fade_in, android.R.anim.fade_out);
 //        setActivityAnim(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-        Logger.t("activityName = "+getClass().getName());
+        Logger.t("activityName = " + getClass().getName());
         setEndActivityAnim(R.anim.activity_finish_in, R.anim.activity_finish_out);
     }
 
     /**
      * 开始activity的动画
      * 更改动画，可以重写此方法
+     *
      * @param enterAnim
      * @param exitAnim
      */
-    public void setStartActivityAnim(int enterAnim, int exitAnim){
+    public void setStartActivityAnim(int enterAnim, int exitAnim) {
         overridePendingTransition(enterAnim, exitAnim);
     }
 
     /**
      * 结束activity的动画
      * 更改动画，可以重写此方法
+     *
      * @param enterAnim
      * @param exitAnim
      */
-    public void setEndActivityAnim(int enterAnim, int exitAnim){
+    public void setEndActivityAnim(int enterAnim, int exitAnim) {
         overridePendingTransition(enterAnim, exitAnim);
     }
 
     /**
      * 跳转activity
+     *
      * @param cls
      */
-    public void skipActivity(Class<?> cls){
-        startActivity(new Intent(context,cls));
+    public void skipActivity(Class<?> cls) {
+        startActivity(new Intent(context, cls));
     }
 
 }
