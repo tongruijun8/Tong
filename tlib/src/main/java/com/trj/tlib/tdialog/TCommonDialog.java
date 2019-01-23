@@ -10,6 +10,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,9 +27,11 @@ import com.trj.tlib.R;
 import com.trj.tlib.uils.DensityUtil;
 import com.trj.tlib.uils.Logger;
 
+import org.w3c.dom.Text;
+
 /**
  * 一般的弹框
- *
+ * <p>
  * 包括：标题、内容布局 和 底部按钮
  */
 public class TCommonDialog extends BaseDialog implements View.OnClickListener {
@@ -40,7 +43,9 @@ public class TCommonDialog extends BaseDialog implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         int ids = v.getId();
-        String msg = viewHolder.tdialogCenterMsg.getText().toString().trim();
+        String msg = "";
+        if (builder.editable) msg = viewHolder.tdialogCenterMsgEdit.getText().toString().trim();
+        else msg = viewHolder.tdialogCenterMsgText.getText().toString().trim();
         if (ids == R.id.tdialog_bottom_cancle) {
             if (builder.tDialogCancleListener != null) {
                 boolean isHide = builder.tDialogCancleListener.onTdClick(viewHolder.tdialogBottomCancle, msg);
@@ -69,11 +74,11 @@ public class TCommonDialog extends BaseDialog implements View.OnClickListener {
     public static class Builder {
         private Context context;
         protected String titleStr;
+        protected boolean editable;
         protected String msgStr;
         protected String msgHintStr;
         protected int msgLength;
         protected int msgGravity;
-        protected int inputType;
         protected int horizontalMargin;
         protected int gravity;
         @FloatRange(from = 0.0, to = 1.0)
@@ -95,7 +100,7 @@ public class TCommonDialog extends BaseDialog implements View.OnClickListener {
             alpha = 0.4f;
             gravity = Gravity.CENTER;
             horizontalMargin = context.getResources().getDimensionPixelOffset(R.dimen.dialog_m_h);
-            inputType = InputType.TYPE_NULL;
+            editable = false;
             msgHintStr = "";
             msgLength = -1;
             Logger.t("---------------mar = " + horizontalMargin);
@@ -108,11 +113,6 @@ public class TCommonDialog extends BaseDialog implements View.OnClickListener {
 
         public Builder setMessage(String msgStr) {
             this.msgStr = msgStr;
-            return this;
-        }
-
-        public Builder setInputType(int inputType) {
-            this.inputType = inputType;
             return this;
         }
 
@@ -203,16 +203,20 @@ public class TCommonDialog extends BaseDialog implements View.OnClickListener {
                 dialog.viewHolder.tdialogTitle.setVisibility(View.VISIBLE);
                 dialog.viewHolder.tdialogTitle.setText(titleStr);
             }
-            if ((msgStr != null && !msgStr.equals("")) || (msgHintStr != null && !msgHintStr.equals(""))) {
+            if (!TextUtils.isEmpty(msgStr) || !TextUtils.isEmpty(msgHintStr)) {
                 dialog.viewHolder.tdialogCenter.setVisibility(View.VISIBLE);
-                dialog.viewHolder.tdialogCenterMsg.setVisibility(View.VISIBLE);
-                dialog.viewHolder.tdialogCenterMsg.setText(msgStr);
-//                dialog.viewHolder.tdialogCenterMsg.setSelection(msgStr.length());
-                dialog.viewHolder.tdialogCenterMsg.setInputType(inputType);
-                dialog.viewHolder.tdialogCenterMsg.setHint(msgHintStr);
-                dialog.viewHolder.tdialogCenterMsg.setGravity(msgGravity);
-                if (msgLength > 0) {
-                    dialog.viewHolder.tdialogCenterMsg.setFilters(new InputFilter[]{new InputFilter.LengthFilter(msgLength)});
+                if (editable) {
+                    dialog.viewHolder.tdialogCenterMsgEdit.setVisibility(View.VISIBLE);
+                    if(!TextUtils.isEmpty(msgStr)) dialog.viewHolder.tdialogCenterMsgEdit.setText(msgStr);
+                    if(!TextUtils.isEmpty(msgHintStr)) dialog.viewHolder.tdialogCenterMsgEdit.setHint(msgHintStr);
+                    if (msgGravity > 0) dialog.viewHolder.tdialogCenterMsgEdit.setGravity(msgGravity);
+                    //长度过滤
+                    if (msgLength > 0) dialog.viewHolder.tdialogCenterMsgEdit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(msgLength)});
+                } else {
+                    dialog.viewHolder.tdialogCenterMsgText.setVisibility(View.VISIBLE);
+                    if(!TextUtils.isEmpty(msgStr)) dialog.viewHolder.tdialogCenterMsgText.setText(msgStr);
+                    if(!TextUtils.isEmpty(msgHintStr)) dialog.viewHolder.tdialogCenterMsgText.setHint(msgHintStr);
+                    if (msgGravity > 0) dialog.viewHolder.tdialogCenterMsgText.setGravity(msgGravity);
                 }
             }
             if (view != null) {
@@ -261,8 +265,8 @@ public class TCommonDialog extends BaseDialog implements View.OnClickListener {
     @Override
     public void show(FragmentManager manager, String tag) {
         super.show(manager, tag);
-        if (builder.msgStr != null && !builder.msgStr.equals("") && builder.inputType != InputType.TYPE_NULL) {
-            viewHolder.tdialogCenterMsg.setSelection(builder.msgStr.length());
+        if (builder.editable && TextUtils.isEmpty(builder.msgStr)) {
+            viewHolder.tdialogCenterMsgEdit.setSelection(builder.msgStr.length());
         }
     }
 
@@ -296,7 +300,8 @@ public class TCommonDialog extends BaseDialog implements View.OnClickListener {
         ImageView tdialogIcon;
         TextView tdialogTitle;
         RelativeLayout tdialogCenter;
-        EditText tdialogCenterMsg;
+        TextView tdialogCenterMsgText;
+        EditText tdialogCenterMsgEdit;
         LinearLayout tdialogBottom;
         TextView tdialogBottomCancle;
         TextView tdialogBottomAffirm;
@@ -307,7 +312,8 @@ public class TCommonDialog extends BaseDialog implements View.OnClickListener {
             tdialogIcon = view.findViewById(R.id.tdialog_icon);
             tdialogTitle = view.findViewById(R.id.tdialog_title);
             tdialogCenter = view.findViewById(R.id.tdialog_center);
-            tdialogCenterMsg = view.findViewById(R.id.tdialog_center_msg);
+            tdialogCenterMsgText = view.findViewById(R.id.tdialog_center_msg_text);
+            tdialogCenterMsgEdit = view.findViewById(R.id.tdialog_center_msg_edit);
             tdialogBottom = view.findViewById(R.id.tdialog_bottom);
             tdialogBottomCancle = view.findViewById(R.id.tdialog_bottom_cancle);
             tdialogBottomAffirm = view.findViewById(R.id.tdialog_bottom_affirm);

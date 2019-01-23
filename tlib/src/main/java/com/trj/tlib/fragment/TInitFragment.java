@@ -48,6 +48,7 @@ public abstract class TInitFragment extends Fragment implements TXListViewListen
     /**
      * 初始化数据
      */
+    @Deprecated
     public abstract void initData();
 
 

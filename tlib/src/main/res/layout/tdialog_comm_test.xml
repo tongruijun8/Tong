@@ -53,16 +53,31 @@
         android:paddingBottom="12dp"
         android:visibility="gone">
 
-        <EditText
-            android:id="@+id/tdialog_center_msg"
+        <TextView
+            android:id="@+id/tdialog_center_msg_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="5dp"
             android:padding="5dp"
             android:textColor="@color/tdialog_color_msg"
             android:textSize="14sp"
+            android:gravity="center_vertical"
             android:background="@color/transparent"
-            android:inputType="none"
+            android:visibility="gone"
+            />
+
+        <EditText
+            android:id="@+id/tdialog_center_msg_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="5dp"
+            android:padding="5dp"
+            android:textColor="@color/tdialog_color_msg"
+            android:textSize="14sp"
+            android:gravity="center_vertical"
+            android:textCursorDrawable="@color/dialog_zhuse"
+            android:inputType="text|textMultiLine|textImeMultiLine"
+            android:visibility="gone"
             />
 
     </RelativeLayout>
