@@ -27,7 +27,6 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
-import com.tencent.bugly.Bugly;
 import com.trj.tlib.R;
 import com.trj.tlib.app.InitApplication;
 import com.trj.tlib.manage.ActivityManager;
@@ -54,6 +53,9 @@ import java.util.Locale;
 
 public class InitActivity extends AppCompatActivity {
 
+    //判断是否注册EventBus
+    private boolean registerEventBus = false;
+
     public Context context;
     public View rootView;
     public View rootMask;
@@ -78,7 +80,6 @@ public class InitActivity extends AppCompatActivity {
         rootContentViewStub = findViewById(R.id.root_content_viewstub);
         rootMask = findViewById(R.id.root_mask);
 
-
 //        初始化工作
         initWork();
 //        添加内容View
@@ -92,18 +93,8 @@ public class InitActivity extends AppCompatActivity {
      * 注册EventBus
      */
     public void registerEventBus() {
+        registerEventBus = true;
         EventBus.getDefault().register(this);
-    }
-
-
-    /**
-     * 设置Buggly 的 appid
-     *
-     * @param bugglyAppid
-     */
-    public void setBugglyAppid(String bugglyAppid) {
-
-        Bugly.init(context, bugglyAppid, false);
     }
 
     /**
@@ -252,8 +243,10 @@ public class InitActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
+        if(registerEventBus){
+            if (EventBus.getDefault().isRegistered(this)) {
+                EventBus.getDefault().unregister(this);
+            }
         }
     }
 
