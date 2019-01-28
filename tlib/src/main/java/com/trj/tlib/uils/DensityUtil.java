@@ -1,56 +1,49 @@
 package com.trj.tlib.uils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
 public class DensityUtil {
 
 
-    /**
-     * dp转px
-     *
-     * @param context
-     * @param dpVal
-     * @return
-     */
-    public static int dp2px(Context context, float dpVal) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpVal, context.getResources()
-                .getDisplayMetrics());
-    }
-
-    /**
-     * sp转px
-     *
-     * @param context
-     * @param spVal
-     * @return
-     */
-    public static int sp2px(Context context, float spVal) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spVal, context.getResources()
-                .getDisplayMetrics());
-    }
-
-    /**
-     * px转dp
-     *
-     * @param context
-     * @param pxVal
-     * @return
-     */
-    public static float px2dp(Context context, float pxVal) {
+    // 将px值转换为dip或dp值
+    public static int px2dp(Context context, float pxValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
-        return (pxVal / scale);
+        return (int) (pxValue / scale + 0.5f);
     }
 
-    /**
-     * px转sp
-     *
-     * @param context
-     * @param pxVal
-     * @return
-     */
-    public static float px2sp(Context context, float pxVal) {
-        return (pxVal / context.getResources().getDisplayMetrics().scaledDensity);
+    // 将dip或dp值转换为px值
+    public static int dp2px(Context context, float dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
+    }
+
+    // 将px值转换为sp值
+    public static int px2sp(Context context, float pxValue) {
+        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (pxValue / fontScale + 0.5f);
+    }
+
+    // 将sp值转换为px值
+    public static int sp2px(Context context, float spValue) {
+        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (spValue * fontScale + 0.5f);
+    }
+
+    // 屏幕宽度（像素）
+    public static int getWindowWidth(Activity context) {
+        DisplayMetrics metric = new DisplayMetrics();
+        context.getWindowManager().getDefaultDisplay().getMetrics(metric);
+        return metric.widthPixels;
+    }
+
+    // 屏幕高度（像素）
+    public static int getWindowHeight(Activity context) {
+        DisplayMetrics metric = new DisplayMetrics();
+        context.getWindowManager().getDefaultDisplay().getMetrics(metric);
+        return metric.heightPixels;
     }
 
 }

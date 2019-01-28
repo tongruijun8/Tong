@@ -26,7 +26,7 @@ import java.util.List;
  * Created by W on 2018/3/24.
  */
 
-public class SearchActivity extends BaseTitleActivity implements AdapterView.OnItemClickListener {
+public class SearchActivity extends InitTitleActivity implements AdapterView.OnItemClickListener {
 
     public static String searchHistory = "SearchHistory";
 

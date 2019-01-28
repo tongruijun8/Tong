@@ -1,1 +1,1 @@
-include ':tlib', ':tres'
+include ':tlib'

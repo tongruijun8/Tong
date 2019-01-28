@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
  * 魅族手机状态栏的颜色
  *
  */
+@Deprecated
 public class StatusbarColorUtils {
     private static Method mSetStatusBarColorIcon;
     private static Method mSetStatusBarDarkIcon;

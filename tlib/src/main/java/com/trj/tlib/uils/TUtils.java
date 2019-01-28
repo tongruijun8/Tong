@@ -1,5 +1,6 @@
 package com.trj.tlib.uils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
@@ -36,6 +38,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 
 /**
@@ -345,6 +348,26 @@ public class TUtils {
         }
         return "";
     }
+
+
+    /**
+     * 获取设备唯一识别码
+     *
+     * @param context
+     * @return
+     */
+    @Deprecated
+    @SuppressLint("MissingPermission")
+    private static String getMyUUID(Activity context) {
+        final TelephonyManager tm = (TelephonyManager) context.getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
+        final String tmDevice, tmSerial, tmPhone, androidId;
+        tmDevice = "" + tm.getDeviceId();
+        tmSerial = "" + tm.getSimSerialNumber();
+        androidId = "" + android.provider.Settings.Secure.getString(context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+        UUID deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
+        return deviceUuid.toString();
+    }
+
 
 
 

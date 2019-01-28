@@ -1,0 +1,2 @@
+1.根据网络请求的实际情况，请重写HttpAPI 、HttpCallback 、 HttpRetrofit 这三个类
+2.具体的实现方法参考对应的类；

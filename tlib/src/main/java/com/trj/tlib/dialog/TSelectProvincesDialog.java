@@ -50,10 +50,7 @@ public class TSelectProvincesDialog extends BasePickView<BasePickView.TSelectPro
      * 设置label文字
      * @param label_year
      * @param label_month
-     * @param label_day
-     * @param label_hours
-     * @param label_mins
-     * @param label_seconds
+     * @param label_week
      */
     public void setLabel(String label_year, String label_month, String label_week) {
         if(label_year!=null){
@@ -81,7 +78,7 @@ public class TSelectProvincesDialog extends BasePickView<BasePickView.TSelectPro
     public void setData(String jsonString) {
 
         if (jsonString == null || jsonString.equals("")) {
-            jsonString = new AssestUtil().getAssestString(context, "province.json");
+            jsonString = AssestUtil.getJson(context, "province.json");
         }
         provinceBeanList.addAll((ArrayList<ProvinceBean>) gson.fromJson(jsonString, new TypeToken<ArrayList<ProvinceBean>>() {
         }.getType()));

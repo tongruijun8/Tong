@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * 查看图片
  */
-public class LookImagesActivity extends BaseTitleActivity {
+public class LookImagesActivity extends InitTitleActivity {
 
     /**
      * code值

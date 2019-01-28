@@ -15,7 +15,7 @@ import com.trj.tlib.views.TViewPager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NavBottomActivity extends BaseActivity implements BottomNavigationView.OnNavigationItemReselectedListener, BottomNavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener {
+public class NavBottomActivity extends InitActivity implements BottomNavigationView.OnNavigationItemReselectedListener, BottomNavigationView.OnNavigationItemSelectedListener, ViewPager.OnPageChangeListener {
 
     protected BottomNavigationView mBottomNavView;
     protected TViewPager mViewpager;

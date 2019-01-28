@@ -16,12 +16,13 @@ import android.widget.ProgressBar;
 
 import com.trj.tlib.R;
 
-public abstract class TWebActivity extends BaseTitleActivity implements TWebJsConstraint {
+public abstract class TWebActivity extends InitTitleActivity implements TWebJsConstraint {
 
-    private WebView webView;
+
+    protected WebView webView;
     private ProgressBar progressBar;
 
-    private WebSettings webSettings;
+    protected WebSettings webSettings;
 
     private String pathUrl = "";
     private String mBeforeText = "";
@@ -40,31 +41,31 @@ public abstract class TWebActivity extends BaseTitleActivity implements TWebJsCo
         progressBar = findViewById(R.id.progressBar);
 
         webSettings = webView.getSettings();
+        initWebSetting(webSettings);
 
     }
 
-    public WebView getWebView() {
-        return webView;
-    }
-
-    protected abstract void initWebSetting(WebSettings webSettings);
-
-    private void initSetting() {
-
+    /**
+     * 可以进一步设置参数(默认已经设置的参数可以满足基本需求)
+     *
+     * @param webSettings
+     */
+    protected void initWebSetting(WebSettings webSettings){
         // 设置与Js交互的权限
         webSettings.setJavaScriptEnabled(true);
 
-        webView.getSettings().setDomStorageEnabled(true);
-        webView.getSettings().setDatabaseEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setDatabaseEnabled(true);
         WebView.setWebContentsDebuggingEnabled(true);
         // 支持本地存储
-        webView.getSettings().setDatabasePath(this.getApplicationContext().getCacheDir().getAbsolutePath());
+        webSettings.setDatabasePath(this.getApplicationContext().getCacheDir().getAbsolutePath());
 
         // 设置允许JS弹窗
 //        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
 
-        initWebSetting(webSettings);
+    }
 
+    private void init() {
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -136,7 +137,7 @@ public abstract class TWebActivity extends BaseTitleActivity implements TWebJsCo
     protected void initHtmlPath(String htmlPath, String beforeText) {
         pathUrl = htmlPath;
         mBeforeText = beforeText;
-        initSetting();
+        init();
         webView.loadUrl(pathUrl);
     }
 
@@ -150,16 +151,16 @@ public abstract class TWebActivity extends BaseTitleActivity implements TWebJsCo
 
     protected void initHtmlContent(String htmlContent, String beforeText) {
         mBeforeText = beforeText;
-        initSetting();
+        init();
         webView.loadDataWithBaseURL(null, htmlContent, "text/html", "utf-8", null);
     }
 
 
 
     /**
-     * @param methodName
-     * @param uri
-     * @param result
+     * @param methodName 方法名
+     * @param uri   Uri 对象
+     * @param result    JsPromptResult对象
      */
     public abstract void getMethodName(String methodName, Uri uri, JsPromptResult result);
 

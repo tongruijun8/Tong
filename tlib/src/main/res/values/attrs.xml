@@ -93,7 +93,7 @@
         </attr>
     </declare-styleable>
 
-    <declare-styleable name="RoundImageView">
+    <declare-styleable name="TRoundImageView">
         <attr name="radius" format="dimension"/>
         <attr name="left_top_radius" format="dimension"/>
         <attr name="right_top_radius" format="dimension"/>

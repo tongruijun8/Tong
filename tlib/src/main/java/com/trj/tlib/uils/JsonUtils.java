@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+@Deprecated
 public abstract class JsonUtils {
     /**
      * 解析是否存在

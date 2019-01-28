@@ -9,9 +9,9 @@ import android.util.Log;
 public class Logger {
 
     //设为false关闭日志
-    private static final boolean LOG_ENABLE = true;
+    public static boolean LOG_ENABLE = true;
 
-    private static final String tag = "tong";
+    public static String tag = "tong";
     public static void t(String msg){
         if (LOG_ENABLE){
             Log.i(tag, msg);

@@ -5,8 +5,15 @@ import android.view.View;
 
 import com.trj.tlib.module.titlemodule.TitleListenter;
 import com.trj.tlib.module.titlemodule.TitleModule;
+import com.trj.tlib.module.xlistviewmodule.TXListViewListenter;
 
-public class BaseTitleActivity extends BaseActivity implements TitleListenter {
+/**
+ * 加载自定义标题栏的activity
+ *
+ * 注：①实现XListView的接口，用于XListView加载数据；
+ *      （TXListViewListenter的使用需要配合TXListViewModule来使用，且布局中需要包含layout_xlistview.xml布局）
+ */
+public class InitTitleActivity extends InitActivity  implements TitleListenter, TXListViewListenter {
 
     public TitleModule titleModule;
 
@@ -27,12 +34,11 @@ public class BaseTitleActivity extends BaseActivity implements TitleListenter {
         initTitleView(isDefaultTitleLayout);
         titleModule = new TitleModule(context, rootView);
         titleModule.setListenter(this);
-
     }
 
     @Override
     public void onClickBack(View view) {
-        finish();
+
     }
 
     @Override
@@ -52,6 +58,16 @@ public class BaseTitleActivity extends BaseActivity implements TitleListenter {
 
     @Override
     public void onMenuItemClick(int position) {
+
+    }
+
+    @Override
+    public void exceptionPageClickEvent() {
+
+    }
+
+    @Override
+    public void getData(int page) {
 
     }
 }

@@ -6,17 +6,16 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 10
-        versionName "1.1.1"
+        versionName "1.1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            shrinkResources true //// 移除无用的resource文件
+            consumerProguardFiles 'proguard-rules.pro'
         }
-
-
 
     }
 }
@@ -52,16 +51,18 @@ dependencies {
     //    implementation 'com.google.dagger:dagger:2.17'
     //    annotationProcessor 'com.google.dagger:dagger-compiler:2.17'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
-    implementation 'pub.devrel:easypermissions:1.2.0'
+    implementation 'pub.devrel:easypermissions:3.0.0'
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
     /* 图片缩放 */
     implementation 'com.bm.photoview:library:1.4.1'
     implementation 'com.contrarywind:Android-PickerView:4.1.6'
     implementation 'com.belerweb:pinyin4j:2.5.1'
-
     //buggly 用于app版本更新
     implementation 'com.tencent.bugly:crashreport_upgrade:latest.release'
     //    implementation 'com.tencent.bugly:nativecrashreport:latest.release'
     implementation 'org.greenrobot:eventbus:3.1.1'
     //图片选择框架
     implementation 'com.zhihu.android:matisse:latest.release'
+    implementation files('libs/commons-lang3-3.8.1.jar')
+
 }

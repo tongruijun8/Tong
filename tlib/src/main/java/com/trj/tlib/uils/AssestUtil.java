@@ -1,6 +1,7 @@
 package com.trj.tlib.uils;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,47 +10,28 @@ import java.io.InputStreamReader;
 
 public class AssestUtil {
 
-    public String getAssestString(Context context,String assestFileName){
+    /**
+     * 得到json文件中的内容
+     * @param context
+     * @param fileName
+     * @return
+     */
+    public static String getJson(Context context, String fileName){
+        StringBuilder stringBuilder = new StringBuilder();
+        //获得assets资源管理器
+        AssetManager assetManager = context.getAssets();
+        //使用IO流读取json文件内容
         try {
-            return toString(context.getAssets().open(assestFileName));
-        } catch (IOException e) {
-            Logger.e("AssestUtil","assest 文件数据异常");
-            return "";
-        }
-    }
-
-    public InputStream getAssestInputStream(Context context,String assestFileName){
-        try {
-            return context.getAssets().open(assestFileName);
-        } catch (IOException e) {
-            Logger.e("AssestUtil","assest 文件数据异常");
-            return null;
-        }
-    }
-
-
-    public String toString(InputStream is) {
-        return toString(is, "utf-8");
-    }
-
-    public String toString(InputStream is, String charset) {
-        StringBuilder sb = new StringBuilder();
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is, charset));
-            while(true) {
-                String line = reader.readLine();
-                if (line == null) {
-                    reader.close();
-                    is.close();
-                    break;
-                }
-
-                sb.append(line).append("\n");
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
+                    assetManager.open(fileName),"utf-8"));
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
             }
-        } catch (IOException var5) {
-            Logger.e("AssestUtil","var5 = " + var5);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return sb.toString();
+        return stringBuilder.toString();
     }
 
 }

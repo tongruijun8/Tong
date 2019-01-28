@@ -170,6 +170,7 @@ public class FileUtils {
      * @return  返回 File 文件的路径
      *
      */
+    @SuppressWarnings("JavadocReference")
     public static String storageExternalPublicPath(String DIRECTORY){
         return storageExternalPublicFile(DIRECTORY).getPath();
     }

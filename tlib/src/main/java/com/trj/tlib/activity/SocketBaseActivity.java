@@ -12,7 +12,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import com.trj.tlib.activity.tsocket.IBackService;
 import com.trj.tlib.activity.tsocket.SocketService;
 
-public abstract class SocketBaseActivity extends BaseTitleActivity {
+public abstract class SocketBaseActivity extends InitTitleActivity {
 
     //子类中完成抽象函数赋值
     //实体中通过实现该全局接收器方法来处理接收到消息

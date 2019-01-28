@@ -3,6 +3,8 @@ package com.trj.tlib.http2;
 import com.google.gson.Gson;
 import com.trj.tlib.uils.Logger;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -14,17 +16,20 @@ import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okio.Buffer;
 
-public class HttpBase {
+public class HttpBase{
 
     public static final int REQUEST_TYPE_DEFAULT = 1;
     public static final int REQUEST_TYPE_JSON = 2;
 
-// baseUrl 不能为空
-    public static String baseUrl = "http://127.0.0.1:8080/";
+//    protected volatile static H mInstance;
+//    protected volatile static H mInstanceJson;
+
+
 
     public static String encodeStr = "application/json; charset=utf-8";
     public static String encodeStr2 = "application/x-www-form-urlencoded; charset=utf-8";
 
+    public static String headerName = "";
     public static String headerInfo = "";
 
     /**
@@ -69,7 +74,9 @@ public class HttpBase {
                 Request request = chain.request();
                 Request.Builder requestBuilder = request.newBuilder();
                 requestBuilder.addHeader("Content-Type", encodeStr2);
-                requestBuilder.addHeader("appBaseInfo", headerInfo);
+                if(!StringUtils.isEmpty(headerName)){
+                    requestBuilder.addHeader(headerName, headerInfo);
+                }
                 requestBuilder.post(RequestBody.create(MediaType.parse(encodeStr),
                         bodyToString(request.body())));
                 request = requestBuilder.build();
@@ -106,7 +113,9 @@ public class HttpBase {
                 Request request = chain.request();
                 Request.Builder requestBuilder = request.newBuilder();
                 requestBuilder.addHeader("Content-Type", HttpBase.encodeStr2);
-                requestBuilder.addHeader("appBaseInfo", new Gson().toJson(headerInfo));
+                if(!StringUtils.isEmpty(headerName)){
+                    requestBuilder.addHeader(headerName, headerInfo);
+                }
                 request = requestBuilder.build();
                 return chain.proceed(request);
             }
@@ -135,6 +144,16 @@ public class HttpBase {
      */
     public static RequestBody getRequestBody(String jsonStr) {
         return RequestBody.create(MediaType.parse(HttpBase.encodeStr), jsonStr);
+    }
+
+    /**
+     * 将json串转化为RequestBody对象
+     * @param jsonStr json字符串
+     * @param encodeStr 数据的编码格式
+     * @return
+     */
+    public static RequestBody getRequestBody(String jsonStr,String encodeStr) {
+        return RequestBody.create(MediaType.parse(encodeStr), jsonStr);
     }
 
 }

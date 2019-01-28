@@ -10,7 +10,7 @@ import com.trj.tlib.R;
 /**
  * 查看图片
  */
-public class LookImagesOneActivity extends BaseTitleActivity {
+public class LookImagesOneActivity extends InitTitleActivity {
 
     private PhotoView photoView;
 
@@ -28,7 +28,7 @@ public class LookImagesOneActivity extends BaseTitleActivity {
 
         titleModule.initTitle("", true);
         titleModule.setTitleLeftText(1 + "/" + 1);
-        titleModule.setTitleLeftTextColor(R.color.colorwhite);
+        titleModule.setTitleLeftTextColor(R.color.color_white);
         photoView = findViewById(R.id.item_image_imageview);
         Intent intent = getIntent();
         pathImg = intent.getStringExtra("path");
@@ -69,7 +69,7 @@ public class LookImagesOneActivity extends BaseTitleActivity {
     @Override
     public void onResume() {
         super.onResume();
-        setStateBarColor(R.color.colorblack);
+        setStateBarColor(R.color.color_black);
     }
 
 }

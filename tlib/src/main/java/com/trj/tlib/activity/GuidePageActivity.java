@@ -13,7 +13,7 @@ import com.trj.tlib.adapter.ImagePagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class GuidePageActivity extends BaseActivity {
+public abstract class GuidePageActivity extends InitActivity {
 
     private ViewPager viewPager;
     private TextView skipView;
@@ -72,7 +72,7 @@ public abstract class GuidePageActivity extends BaseActivity {
         skipView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                skipActivity();
+                onClickSkipView();
                 finish();
             }
         });
@@ -89,6 +89,7 @@ public abstract class GuidePageActivity extends BaseActivity {
     }
 
     public abstract boolean setPageData(List<Object> imgList);
-    public abstract void skipActivity();
+
+    protected abstract void onClickSkipView();
 
 }

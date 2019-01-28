@@ -5,8 +5,6 @@ import android.view.animation.TranslateAnimation;
 
 public class AnimationUtil {
 
-    private static final String TAG = AnimationUtil.class.getSimpleName();
-
     /**
      * 从控件所在位置移动到控件的底部
      *

@@ -22,9 +22,11 @@ public class MD5Utils {
      * 对字符串md5加密(小写+字母)
      *
      * @param str 传入要加密的字符串
+     * @param islong  If true returns a 16-bit string,
+     *                if false returns a 8-bit string
      * @return MD5加密后的字符串
      */
-    public static String getMD5(String str) {
+    public static String getMD5(String str, boolean islong) {
         try {
             // 生成一个MD5加密计算摘要
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -32,8 +34,13 @@ public class MD5Utils {
             md.update(str.getBytes());
             // digest()最后确定返回md5 hash值，返回值为8为字符串。因为md5 hash值是16位的hex值，实际上就是8位的字符
             // BigInteger函数则将8位的字符串转换成16位hex值，用字符串来表示；得到字符串形式的hash值
-//            return md.digest().toString();
-            return new BigInteger(1, md.digest()).toString(16);
+            if (islong) {
+                return new BigInteger(1, md.digest()).toString(16);
+            } else {
+                return md.digest().toString();
+            }
+
+
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -44,10 +51,8 @@ public class MD5Utils {
      * MD5编码:把密文转换成十六进制的字符串形式
      *
      * @param codingContent 要编码的内容
-     * @param coding 编码
+     * @param coding        编码
      * @return MD5编码之后的内容
-     *
-     *
      */
     public static String md5Encode(String codingContent, String coding) {
         String resultString = null;
@@ -83,21 +88,5 @@ public class MD5Utils {
     }
 
 
-    /**
-     * 获取设备唯一识别码
-     * @param context
-     * @return
-     */
-    @Deprecated
-    @SuppressLint("MissingPermission")
-    private static String getMyUUID(Activity context) {
-        final TelephonyManager tm = (TelephonyManager) context.getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
-        final String tmDevice, tmSerial, tmPhone, androidId;
-        tmDevice = "" + tm.getDeviceId();
-        tmSerial = "" + tm.getSimSerialNumber();
-        androidId = "" + android.provider.Settings.Secure.getString(context.getContentResolver(),android.provider.Settings.Secure.ANDROID_ID);
-        UUID deviceUuid = new UUID(androidId.hashCode(), ((long)tmDevice.hashCode() << 32) | tmSerial.hashCode());
-        return deviceUuid.toString();
-    }
 
 }

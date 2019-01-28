@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * 查看图片
  */
-public class LookImages2Activity extends BaseTitleActivity {
+public class LookImages2Activity extends InitTitleActivity {
 
     private int index;
     private ArrayList<String> dataImg;

@@ -100,7 +100,7 @@ public class InitActivity extends AppCompatActivity {
     /**
      * 初始化标题布局
      *
-     * @param defaultLayout 是否是默认的布局
+     * @param defaultLayout 是否加载默认标题布局
      */
     protected void initTitleView(boolean defaultLayout) {
         if (defaultLayout) {
@@ -140,7 +140,7 @@ public class InitActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setStateBarColor(R.color.colorwhite);
+        setStateBarColor(R.color.color_white);
     }
 
     public void setStateBarColor(@ColorRes int colorRes) {
@@ -148,7 +148,7 @@ public class InitActivity extends AppCompatActivity {
         Logger.t("--####--" + brand);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (brand.contains("Xiaomi")) {
-                if (colorRes == R.color.colorwhite) {
+                if (colorRes == R.color.color_white) {
                     Window window = getWindow();
                     window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                     window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -159,7 +159,7 @@ public class InitActivity extends AppCompatActivity {
                 }
             } else if (Build.MANUFACTURER.equalsIgnoreCase("OPPO")) {
                 //OPPO
-                if (colorRes == R.color.colorwhite) {
+                if (colorRes == R.color.color_white) {
                     setOPPOStatusTextColor(true, this);
                 } else {
                     setOPPOStatusTextColor(false, this);
