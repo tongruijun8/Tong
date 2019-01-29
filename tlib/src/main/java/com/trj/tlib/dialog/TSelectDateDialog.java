@@ -126,9 +126,7 @@ public class TSelectDateDialog extends BasePickView<BasePickView.TSelectDateList
 
     /**
      * 设置循环状态
-     * @param cyclic1 是否循环
-     * @param cyclic2 第二列是否循环
-     * @param cyclic3 第三列是否循环
+     * @param cyclic 是否循环
      */
     public void setCyclic(boolean cyclic) {
         this.cyclic = cyclic;

@@ -12,7 +12,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+//            minifyEnabled true
 //            shrinkResources true //// 移除无用的resource文件
             consumerProguardFiles 'proguard-rules.pro'
         }
